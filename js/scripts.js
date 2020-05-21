@@ -16,11 +16,11 @@ AddressBook.prototype.assignId = function() {
 
 AddressBook.prototype.findContact = function(id) {
   for (var i=0; i< this.contacts.length; i++) {
-    if (this.contacts[i]) {     // <-- This line is new!
+    if (this.contacts[i]) {    
       if (this.contacts[i].id == id) {
         return this.contacts[i];
       }
-    }                          // <-- This line is also new!
+    }                         
   };
   return false;
 }
@@ -32,7 +32,7 @@ AddressBook.prototype.deleteContact = function(id) {
         delete this.contacts[i];
         return true;
       }
-    } // <-- This line is also new!
+    } 
   };
   return false;
 }
@@ -46,7 +46,7 @@ AddressBook.prototype.updateContact = function(id,contact) {
         contact.id = i;
         return true;
       }
-    } // <-- This line is also new!
+    } 
   };
   return false;
 }
@@ -60,3 +60,18 @@ function Contact(firstName, lastName, phoneNumber) {
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
+
+// User Interface Logic ---------
+var addressBook = new AddressBook();
+
+$(document).ready(function() {
+  $("form#new-contact").submit(function(event) {
+    event.preventDefault();
+    var inputtedFirstName = $("input#new-first-name").val();
+    var inputtedLastName = $("input#new-last-name").val();
+    var inputtedPhoneNumber = $("input#new-phone-number").val();
+    var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
+    addressBook.addContact(newContact);
+    console.log(addressBook.contacts);
+  })
+})
