@@ -63,12 +63,12 @@ Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
 
-function emailObject (email, type){
+function EmailObject (email, type){
   this.email = email;
   this.type = type;
 }
 
-function addressObject(address, type){
+function AddressObject(address, type){
   this.address = address;
   this.type = type;
 }
@@ -150,9 +150,8 @@ $(document).ready(function() {
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
 
-    var { inputtedEmail, inputtedEmailType, inputtedAddress, inputtedAddressType, inputtedFirstName, inputtedLastName, inputtedPhoneNumber } = getInput();
+    var {inputtedFirstName, inputtedLastName, inputtedPhoneNumber } = getInput();
 
-    createEmailAndAddressObjects(inputtedEmail, inputtedEmailType, inputtedAddress, inputtedAddressType);
 
     resetFields();
 
@@ -165,20 +164,14 @@ $(document).ready(function() {
     displayContacts(addressBook);
   })
 
+  //add extra form for extra addresses
   $(".addresses").on("click","button",function(){
-    let inputtedAddress = $("input#new-address").val();
-    let inputtedAddressType = $(".addresses select").val();
-    let newAddress = new addressObject(inputtedAddress, inputtedAddressType);
-    addressArray.push(newAddress);
-    $("input#new-address").val("");
+    $(".addresses").first().before('<div class="form-group addresses"><select><option>Work</option><option>Personal</option><select><label' + '>Address</label><input type="text" class="form-control" class="new-address"></div>');
   })
 
+  //add extra form for extra addresses
   $(".emails").on("click","button",function(){
-    let inputtedEmail = $("input#new-email").val();
-    let inputtedEmailType = $(".emails select").val();
-    let newEmail = new emailObject(inputtedEmail, inputtedEmailType);
-    emailArray.push(newEmail);
-    $("input#new-email").val("");
+    $(".emails").first().before('<div class="form-group emails"><select><option>Work</option><option>Personal</option><select><label' + '>Email</label><input type="text" class="form-control" class="new-email"></div>');
   })
 
   //change address books when the user switches address books with the option menu
@@ -212,22 +205,26 @@ $(document).ready(function() {
 })
 
 
-function createEmailAndAddressObjects(inputtedEmail, inputtedEmailType, inputtedAddress, inputtedAddressType) {
-  var newEmail = new emailObject(inputtedEmail, inputtedEmailType);
-  emailArray.push(newEmail);
-  var newAddress = new addressObject(inputtedAddress, inputtedAddressType);
-  addressArray.push(newAddress);
-}
-
 function getInput() {
-  var inputtedFirstName = $("input#new-first-name").val();
-  var inputtedLastName = $("input#new-last-name").val();
-  var inputtedPhoneNumber = $("input#new-phone-number").val();
-  var inputtedEmail = $("input#new-email").val();
-  var inputtedEmailType = $(".emails select").val();
-  var inputtedAddress = $("input#new-address").val();
-  var inputtedAddressType = $(".addresses select").val();
-  return { inputtedEmail, inputtedEmailType, inputtedAddress, inputtedAddressType, inputtedFirstName, inputtedLastName, inputtedPhoneNumber };
+  let inputtedFirstName = $("input#new-first-name").val();
+  let inputtedLastName = $("input#new-last-name").val();
+  let inputtedPhoneNumber = $("input#new-phone-number").val();
+ 
+  //add  all address to address array
+  $(".addresses").each(function(index,address){
+    let input = $(this).children("input").val();
+    let type = $(this).children("select").val();
+    addressArray.push(new AddressObject(input, type));
+  });
+
+  //add all emails to email array
+  $(".emails").each(function(index,email){
+    let input = $(this).children("input").val();
+    let type = $(this).children("select").val();
+    emailArray.push(new EmailObject(input, type));
+  });
+
+  return { inputtedFirstName, inputtedLastName, inputtedPhoneNumber };
 }
 
 function resetFields() {
@@ -236,6 +233,9 @@ function resetFields() {
   $("input#new-phone-number").val("");
   $("input#new-email").val("");
   $("input#new-address").val("");
+
+  $(".addresses").not(":last").remove();
+  $(".emails").not(":last").remove();
 }
 
 

@@ -1,3 +1,7 @@
 #show-contact {
   display: none;
 }
+
+#contactstype {
+  text-transform: capitalize;
+}
