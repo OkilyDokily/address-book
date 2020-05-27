@@ -165,13 +165,14 @@ $(document).ready(function() {
   })
 
   //add extra form for extra addresses
-  $(".addresses").on("click","button",function(){
-    $(".addresses").first().before('<div class="form-group addresses"><select><option>Work</option><option>Personal</option><select><label' + '>Address</label><input type="text" class="form-control" class="new-address"></div>');
+  $(".newaddress").click(function(){
+    console.log("ahhh")
+    $(".addresses").last().after('<div class="form-group addresses"><select><option>Work</option><option>Personal</option><select><label' + '>Address</label><input type="text" class="form-control" class="new-address"></div>');
   })
 
   //add extra form for extra addresses
-  $(".emails").on("click","button",function(){
-    $(".emails").first().before('<div class="form-group emails"><select><option>Work</option><option>Personal</option><select><label' + '>Email</label><input type="text" class="form-control" class="new-email"></div>');
+  $(".newemail").click(function(){
+    $(".emails").last().after('<div class="form-group emails"><select><option>Work</option><option>Personal</option><select><label' + '>Email</label><input type="text" class="form-control" class="new-email"></div>');
   })
 
   //change address books when the user switches address books with the option menu
@@ -184,7 +185,7 @@ $(document).ready(function() {
     displayContacts(addressBook);
   });
 
-  //when user clicks to create a customized address book
+  //when user clicks to create a customized address book and switch the ui to that book
   $("#newaddressbookbutton").click(function(){
     
     let newAddress  = $("#newaddressinput").val();
